@@ -1,0 +1,21 @@
+{
+  "name": "spotify-clone-backend",
+  "version": "1.0.0",
+  "description": "Backend for Spotify Clone with advanced features",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node seed.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "google-auth-library": "^9.11.0",
+    "multer": "^1.4.5-lts.1",
+    "music-metadata": "^7.14.0",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
+  }
+}
