@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { GoogleLogin, GoogleOAuthProvider } from '@react-oauth/google';
 import { ShieldCheck, User, Mail, Sparkles, Key } from 'lucide-react';
 import { useAudio } from '../context/AudioContext';
+import { BACKEND_URL } from '../context/AudioContext';
 
 export default function Auth({ setActiveTab }) {
   const { login } = useAudio();
@@ -12,7 +13,7 @@ export default function Auth({ setActiveTab }) {
   // Handle successful Google Login
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
-      const response = await fetch('http://localhost:3001/api/auth/google', {
+      const response = await fetch(`${BACKEND_URL}/api/auth/google`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ credential: credentialResponse.credential })
@@ -40,7 +41,7 @@ export default function Auth({ setActiveTab }) {
     }
 
     try {
-      const response = await fetch('http://localhost:3001/api/auth/google', {
+      const response = await fetch(`${BACKEND_URL}/api/auth/google`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

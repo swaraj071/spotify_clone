@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Sparkles, Play, MessageSquare, Volume2 } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useAudio } from '../context/AudioContext';
+import { BACKEND_URL } from '../context/AudioContext';
 
 export default function AIDJ() {
   const { playSong, setQueue } = useAudio();
@@ -36,7 +37,7 @@ export default function AIDJ() {
     setCuratedSongs([]);
 
     try {
-      const res = await fetch('http://localhost:3001/api/ai-dj', {
+      const res = await fetch(`${BACKEND_URL}/api/ai-dj`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ prompt })

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Play, Plus, Trash2, Clock, Music, Heart, PlusCircle, Check, Users } from 'lucide-react';
 import { useAudio } from '../context/AudioContext';
+import { BACKEND_URL } from '../context/AudioContext';
 import ReactiveSearchBar from './ReactiveSearchBar';
 
 export default function Dashboard({ activeTab, setActiveTab }) {
@@ -26,7 +27,7 @@ export default function Dashboard({ activeTab, setActiveTab }) {
       const getPlaylistDetail = async () => {
         setPlaylistLoading(true);
         try {
-          const res = await fetch(`http://localhost:3001/api/playlists/${currentPlaylist.id}`);
+          const res = await fetch(`${BACKEND_URL}/api/playlists/${currentPlaylist.id}`);
           const data = await res.json();
           setPlaylistDetail(data);
         } catch (err) {
@@ -48,7 +49,7 @@ export default function Dashboard({ activeTab, setActiveTab }) {
       if (user) {
         headers['x-user-id'] = user.id;
       }
-      const res = await fetch('http://localhost:3001/api/playlists', {
+      const res = await fetch(`${BACKEND_URL}/api/playlists`, {
         method: 'POST',
         headers,
         body: JSON.stringify({
@@ -70,7 +71,7 @@ export default function Dashboard({ activeTab, setActiveTab }) {
     try {
       // If it's a Jamendo cloud track, import/register it to local DB first
       if (song.isJamendo) {
-        const importRes = await fetch('http://localhost:3001/api/songs/import', {
+        const importRes = await fetch(`${BACKEND_URL}/api/songs/import`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -92,7 +93,7 @@ export default function Dashboard({ activeTab, setActiveTab }) {
       if (user) {
         headers['x-user-id'] = user.id;
       }
-      const res = await fetch(`http://localhost:3001/api/playlists/${playlistId}/songs`, {
+      const res = await fetch(`${BACKEND_URL}/api/playlists/${playlistId}/songs`, {
         method: 'POST',
         headers,
         body: JSON.stringify({ songId: song.id })
@@ -103,7 +104,7 @@ export default function Dashboard({ activeTab, setActiveTab }) {
         setShowAddToPlaylistDropdown(null);
         // Refresh playlist detail if we are currently looking at it
         if (activeTab === 'playlist' && currentPlaylist && currentPlaylist.id === playlistId) {
-          const detailRes = await fetch(`http://localhost:3001/api/playlists/${currentPlaylist.id}`);
+          const detailRes = await fetch(`${BACKEND_URL}/api/playlists/${currentPlaylist.id}`);
           const detailData = await detailRes.json();
           setPlaylistDetail(detailData);
         }
@@ -124,7 +125,7 @@ export default function Dashboard({ activeTab, setActiveTab }) {
       if (user) {
         headers['x-user-id'] = user.id;
       }
-      const res = await fetch(`http://localhost:3001/api/playlists/${playlistDetail.id}/songs/${songId}`, {
+      const res = await fetch(`${BACKEND_URL}/api/playlists/${playlistDetail.id}/songs/${songId}`, {
         method: 'DELETE',
         headers
       });

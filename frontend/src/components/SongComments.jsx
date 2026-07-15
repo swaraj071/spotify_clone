@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MessageSquare, Play, Send } from 'lucide-react';
 import { useAudio } from '../context/AudioContext';
+import { BACKEND_URL } from '../context/AudioContext';
 
 export default function SongComments() {
   const { currentSong, currentTime, seek, user } = useAudio();
@@ -12,7 +13,7 @@ export default function SongComments() {
   const fetchComments = async () => {
     if (!currentSong) return;
     try {
-      const res = await fetch(`http://localhost:3001/api/comments/${currentSong.id}`);
+      const res = await fetch(`${BACKEND_URL}/api/comments/${currentSong.id}`);
       const data = await res.json();
       setComments(data);
     } catch (err) {
@@ -38,7 +39,7 @@ export default function SongComments() {
         headers['x-user-avatar'] = user.avatar_url;
       }
 
-      const res = await fetch('http://localhost:3001/api/comments', {
+      const res = await fetch(`${BACKEND_URL}/api/comments`, {
         method: 'POST',
         headers,
         body: JSON.stringify({

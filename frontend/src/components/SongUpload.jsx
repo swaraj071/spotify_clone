@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Upload, Music, Image, Type, Save } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { useAudio } from '../context/AudioContext';
+import { BACKEND_URL } from '../context/AudioContext';
 
 export default function SongUpload() {
   const { fetchSongs, user } = useAudio();
@@ -116,7 +117,7 @@ export default function SongUpload() {
         headers['x-user-name'] = user.name;
       }
 
-      const res = await fetch('http://localhost:3001/api/songs', {
+      const res = await fetch(`${BACKEND_URL}/api/songs`, {
         method: 'POST',
         headers,
         body: formData

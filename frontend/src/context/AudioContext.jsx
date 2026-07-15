@@ -2,6 +2,8 @@ import React, { createContext, useContext, useState, useEffect, useRef } from 'r
 
 const AudioContextInstance = createContext();
 
+export const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:3001';
+
 export const useAudio = () => useContext(AudioContextInstance);
 
 export const AudioProvider = ({ children }) => {
@@ -58,7 +60,7 @@ export const AudioProvider = ({ children }) => {
             album: track.album_name || 'Jamendo Single',
             duration: track.duration,
             file_url: track.audio,
-            cover_url: track.image || 'http://localhost:3001/uploads/default-cover.jpg',
+            cover_url: track.image || `${BACKEND_URL}/uploads/default-cover.jpg`,
             genre: track.musicinfo?.tags?.genres?.[0] || 'Jamendo Cloud',
             lyrics: track.lyrics ? [{ time: 0, text: track.lyrics, translation: '(Lyrics from Jamendo - no translation)' }] : [],
             isJamendo: true
@@ -119,7 +121,7 @@ export const AudioProvider = ({ children }) => {
   // Fetch initial songs and playlists
   const fetchSongs = async () => {
     try {
-      const res = await fetch('http://localhost:3001/api/songs');
+      const res = await fetch(`${BACKEND_URL}/api/songs`);
       const data = await res.json();
       setSongs(data);
     } catch (err) {
@@ -129,7 +131,7 @@ export const AudioProvider = ({ children }) => {
 
   const fetchPlaylists = async () => {
     try {
-      const res = await fetch('http://localhost:3001/api/playlists');
+      const res = await fetch(`${BACKEND_URL}/api/playlists`);
       const data = await res.json();
       setPlaylists(data);
     } catch (err) {
