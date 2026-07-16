@@ -552,6 +552,35 @@ app.post('/api/ai-dj', async (req, res) => {
   }
 });
 
+// YouTube Search Scraper endpoint (returns first videoId for a search query)
+app.get('/api/youtube/search', async (req, res) => {
+  const { query } = req.query;
+  if (!query) {
+    return res.status(400).json({ error: 'Missing query parameter.' });
+  }
+
+  try {
+    const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+    const response = await fetch(searchUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36'
+      }
+    });
+    const html = await response.text();
+    
+    // Regex matches the first videoId entry inside YouTube's JSON page state payload
+    const match = html.match(/"videoId":"([^"]+)"/);
+    if (match && match[1]) {
+      return res.json({ videoId: match[1] });
+    }
+    
+    res.status(404).json({ error: 'No YouTube video found.' });
+  } catch (error) {
+    console.error('YouTube search error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Express server running on http://localhost:${PORT}`);
 });

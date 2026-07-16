@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Play, Pause, SkipForward, SkipBack, Shuffle, Repeat, Volume2, VolumeX, AlignLeft, MessageCircle, Sliders, Maximize2 } from 'lucide-react';
+import { Play, Pause, SkipForward, SkipBack, Shuffle, Repeat, Volume2, VolumeX, AlignLeft, MessageCircle, Sliders, Maximize2, Tv } from 'lucide-react';
 import { useAudio } from './context/AudioContext';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
@@ -10,11 +10,13 @@ import SongComments from './components/SongComments';
 import SongUpload from './components/SongUpload';
 import AIDJ from './components/AIDJ';
 import Auth from './components/Auth';
+import CinemaMode from './components/CinemaMode';
 
 function AppContent() {
   const [activeTab, setActiveTab] = useState('home'); // 'home' | 'studio' | 'aidj' | 'upload' | 'auth' | 'playlist'
   const [showLyricsPanel, setShowLyricsPanel] = useState(false);
   const [showCommentsPanel, setShowCommentsPanel] = useState(false);
+  const [showCinemaMode, setShowCinemaMode] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [prevVolume, setPrevVolume] = useState(0.5);
 
@@ -102,6 +104,13 @@ function AppContent() {
             {showLyricsPanel && <LyricsView />}
             {showCommentsPanel && <SongComments />}
           </aside>
+        )}
+
+        {showCinemaMode && currentSong && (
+          <CinemaMode 
+            currentSong={currentSong} 
+            onClose={() => setShowCinemaMode(false)} 
+          />
         )}
       </div>
 
@@ -200,6 +209,13 @@ function AppContent() {
             title="Discussions"
           >
             <MessageCircle size={16} />
+          </button>
+          <button
+            onClick={() => setShowCinemaMode(!showCinemaMode)}
+            className={`aux-btn ${showCinemaMode ? 'active' : ''}`}
+            title="Cinema Mode (Official Music Video)"
+          >
+            <Tv size={16} />
           </button>
 
           <div className="volume-slider-group">
